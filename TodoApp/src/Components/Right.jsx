@@ -1,17 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Right = ({ todo, setTodos, startEdit}) => {
+   const[searchItem, setSearchItem] = useState("")
   const removeTask = (id) => {
     const updatedTodo = todo.filter((task) => task.id !== id);
     setTodos(updatedTodo);
   };
 
+  //filter todos
+
+const filteredData = todo.filter((task) =>
+    task.title.toLowerCase().includes(searchItem.toLowerCase()) ||
+  task.desc.toLowerCase().includes(searchItem.toLowerCase())
+  );
+
   return (
     <div className="flex flex-col w-full gap-4">
-      {todo.length === 0 ? (
+      <input type="text" 
+      placeholder="search item"
+      className="p-2 w-[95%] m-auto border rounded"
+      value={searchItem}
+      onChange={(e)=>setSearchItem(e.target.value)}
+       />
+      {filteredData.length === 0 ? (
         <p className="text-gray-500 text-center">No tasks added yet</p>
       ) : (
-        todo.map((task) => (
+        filteredData.map((task) => (
           <div
             key={task.id}
             className="bg-white p-4 rounded-lg shadow-md flex flex-col gap-2"
